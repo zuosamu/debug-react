@@ -381,38 +381,7 @@ module.exports = function (webpackEnv) {
           oneOf: [
             // TODO: Merge this config once `image/avif` is in the mime-db
             // https://github.com/jshttp/mime-db
-            {
-              test: /\.(js|mjs|jsx|ts|tsx)$/,
-              include: paths.appSrc,
-              loader: require.resolve('babel-loader'),
-              options: {
-                customize: require.resolve(
-                  'babel-preset-react-app/webpack-overrides'
-                ),
-​
-                plugins: [
-                  require.resolve('@babel/plugin-transform-flow-strip-types'),
-                  [
-                    require.resolve('babel-plugin-named-asset-import'),
-                    {
-                      loaderMap: {
-                        svg: {
-                          ReactComponent:
-                            '@svgr/webpack?-svgo,+titleProp,+ref![path]'
-                        }
-                      }
-                    }
-                  ]
-                ],
-                // This is a feature of `babel-loader` for webpack (not Babel itself).
-                // It enables caching results in ./node_modules/.cache/babel-loader/
-                // directory for faster rebuilds.
-                cacheDirectory: true,
-                // See #6846 for context on why cacheCompression is disabled
-                cacheCompression: false,
-                compact: isEnvProduction
-              }
-            },
+
             {
               test: [/\.avif$/],
               loader: require.resolve("url-loader"),
@@ -453,6 +422,7 @@ module.exports = function (webpackEnv) {
                 ],
 
                 plugins: [
+                  require.resolve("@babel/plugin-transform-flow-strip-types"),
                   [
                     require.resolve("babel-plugin-named-asset-import"),
                     {
